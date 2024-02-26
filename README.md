@@ -21,7 +21,7 @@
 
 8 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
 
-## Screenshot of Task Management for realte Task management system like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
+## Screenshot of Task Management for related Task management systems like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
 
 ![signup](https://github.com/deepeshrastogi/task_management/assets/38438355/b55ea244-50d3-4349-a5bc-c1636a5dafba)
 ![login](https://github.com/deepeshrastogi/task_management/assets/38438355/1832ed41-727e-4093-be1e-3d2e47f29c52)
@@ -31,3 +31,7 @@
 ![task_list_page_with_search_pagination_and_filter_option](https://github.com/deepeshrastogi/task_management/assets/38438355/767eb4a1-da9f-45d1-a16b-e292f10001a0)
 ![dashboard](https://github.com/deepeshrastogi/task_management/assets/38438355/058adb2b-686b-421c-9374-6d9857a1b8c6)
 
+
+![TaskCreationAPI](https://github.com/deepeshrastogi/task_management/assets/38438355/2b50aff8-9f43-4ca4-9faa-92e43a6eeac2)
+![login_api](https://github.com/deepeshrastogi/task_management/assets/38438355/d36d6990-43a5-46ee-874b-327841279392)
+![singup_api](https://github.com/deepeshrastogi/task_management/assets/38438355/0fb5abe3-c785-4b50-bafc-6bf08b2fbb9e)
