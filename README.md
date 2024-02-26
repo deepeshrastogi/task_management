@@ -15,9 +15,11 @@
 
 5 - Run command "php artisan serve --port=8080"
 
-6 - Create a new account/Login
+6 - Added API Collection in Root folder "API Collection", we can import this collection to postman software
 
-7 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
+7 - Create a new account/Login
+
+8 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
 
 ## Screenshot of Task Management for realte Task management system like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
 
