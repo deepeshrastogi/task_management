@@ -28,6 +28,16 @@ class TaskController extends Controller
     }
 
     /**
+     * Tasks List
+     * @param  \Illuminate\Http\Request
+     * @return [json] token object, through an error if user credentials are not valid
+     */
+    public function index(Request $request)
+    {
+        return $this->taskService->index($request);
+    }
+
+    /**
      * Login user and create token, email and password needs to send through post
      * @param  \Illuminate\Http\Request
      * @return [json] token object, through an error if user credentials are not valid
@@ -36,6 +46,17 @@ class TaskController extends Controller
     {
         return $this->taskService->store($request);
     }
+
+    /**
+     * Tasks List
+     * @param  \Illuminate\Http\Request
+     * @return [json] token object, through an error if user credentials are not valid
+     */
+    public function show(Request $request)
+    {
+        return $this->taskService->show($request);
+    }
+
 
     public function update(Request $request)
     {

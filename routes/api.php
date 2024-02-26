@@ -15,16 +15,17 @@ use App\Http\Controllers\Server\Tasks\TaskController;
 |
 */
 
-Route::group(['middleware' => 'api'], function () {
-    Route::group(['prefix' => 'user'], function () {
-        Route::post('/login', [UserAuthController::class, 'login']);
-        Route::post('/signup', [UserAuthController::class, 'signup']);
+Route::group(['middleware' => 'api','as' => 'api.'], function () {
+    Route::group(['prefix' => 'user','as' => 'user.'], function () {
+        Route::post('/login', [UserAuthController::class, 'login'])->name('login');
+        Route::post('/signup', [UserAuthController::class, 'signup'])->name('signup');
         Route::group(['middleware' => 'auth:sanctum'], function() {
-            Route::get('logout', [UserAuthController::class, 'logout']);
+            Route::get('logout', [UserAuthController::class, 'logout'])->name('logout');
         });
     });
 
     Route::group(['middleware' => 'auth:sanctum','prefix' => 'task'], function () {
+        Route::get('index', [TaskController::class, 'index']);
         Route::post('create', [TaskController::class, 'store']);
     });
 });

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Config;
 
 class Task extends Model
 {
@@ -24,8 +25,12 @@ class Task extends Model
         'is_published',
         'attachment',
         'task_id',
-        'user_id',
+        'user_id'
     ];
+
+    // protected $appends = [
+    //     'status_name'
+    // ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -37,5 +42,17 @@ class Task extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected function getStatusAttribute($value){
+        $statusArr = Config::get('constant.STATUS');
+        // return ucfirst($statusArr[$value]);
+        return $statusArr[$value];
+    }
+
+    protected function setStatusAttribute($value){
+        $statusArr = Config::get('constant.STATUS');
+        $newStatusArr = array_flip($statusArr);
+        $this->attributes['status'] = $newStatusArr[$value];
+    }
 
 }

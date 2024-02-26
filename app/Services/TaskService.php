@@ -16,6 +16,7 @@ class TaskService
      * @var $taskRepository
      */
     protected $taskRepository;
+    protected $loginUser;
 
     /**
      * order constructor.
@@ -26,6 +27,27 @@ class TaskService
     public function __construct(TaskRepositoryInterface $taskRepository)
     {
         $this->taskRepository = $taskRepository;
+       
+    }
+
+    public function index($requestData)
+    {
+        $loginUser = $this->loginUser();
+        $page = $requestData->page;
+        $search = $requestData->search;
+        $status = $requestData->status;
+        $tasks = Task::where(['user_id' => $loginUser->id]);
+        if(!empty($search)){
+            $tasks = $tasks->where('title',$search);
+        }
+        if(!empty($status)){
+            $tasks = $tasks->where('status',$status);
+        }
+        $tasks = $tasks->orderBy('title','asc')
+        ->orderBy('created_at','asc')
+        ->paginate($page);
+        // $response = ['user' => $task];
+        // return $this->success(message: 'Your task is created successfully', content: $response);
     }
 
     /**
@@ -39,7 +61,7 @@ class TaskService
             'title' => 'required|max:100|unique:task',
             'content' => 'required',
             'status' => 'required',
-            'attachment' => 'required|image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',
+            'attachment' => 'image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors(), 401);
@@ -68,6 +90,17 @@ class TaskService
         return $this->success(message: 'Your task is created successfully', content: $response);
     }
 
+    public function show($requestData)
+    {
+        $loginUser = $this->loginUser();
+        $task = Task::with('subtask')->find($requestData->id);
+        if($task->user_id == $loginUser->id){
+            
+        }else{
+            // unauthorized
+        }
+    }
+
     /**
      * singup user and create token, name,email,password and confirm_password needs to send through post
      * @param  \Illuminate\Http\Request
@@ -76,23 +109,36 @@ class TaskService
     public function update($requestData)
     {
         $validator = Validator::make($requestData->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password',
+            'title' => 'required|max:100|unique:task',
+            'content' => 'required',
+            'status' => 'required',
+            'attachment' => 'image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',
         ]);
-
         if ($validator->fails()) {
             return $this->error($validator->errors(), 401);
         }
-        $taskData['name'] = $requestData->name;
-        $taskData['email'] = $requestData->email;
-        $taskData['password'] = Hash::make($requestData->password);
-        $user = $this->taskRepository->storeTask($taskData);
-        $tokenResult = $user->createToken('user_access_token');
-        $token = $tokenResult->plainTextToken;
-        $response = ['user' => $user, 'token' => $token];
-        return $this->success(message: 'Your account is created successfully', content: $response);
+        $userId = $requestData->user()->id;
+        $taskData['title'] = $requestData->title;
+        $taskData['content'] = $requestData->content;
+        $taskData['status'] = $requestData->status;
+        $taskData['user_id'] = $userId;
+
+        if ($requestData->hasfile('attachment')) {
+            $destinationPath = public_path('uploads');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true); // Create the directory recursively
+            }
+            $attachFile = $requestData->file('attachment');
+            $fileExtension = time() . '.' . $attachFile->getClientOriginalExtension();
+            $uniqueFname = rand() . time() . "_" . $fileExtension;
+            $attachFile->move($destinationPath, $uniqueFname);
+            $pulicUrlPath = url('/') . '/uploads/' . $uniqueFname;
+            $taskData['attachment'] = $pulicUrlPath;
+        }
+
+        $task = $this->taskRepository->storeTask($taskData);
+        $response = ['user' => $task];
+        return $this->success(message: 'Your task is created successfully', content: $response);
     }
 
     /**

@@ -1,0 +1,26 @@
+.error{
+    color: #dc3545;;
+}
+
+.help-block strong{
+    color: #dc3545;;
+}
+
+label.required:after {
+    content: "*";
+    color: #dc3545;;
+    font-size: 14px;
+}
+
+.view-image{
+	height: 205px;
+    width: 247px;
+    padding: 2px;
+    box-shadow: 4px 3px 6px #ebebeb;
+	background: #e1e1e17a;
+	object-fit: contain;
+}
+
+.inline-flex{
+    display: inline;
+}
