@@ -11,15 +11,17 @@
 
 3 - Run the command "composer update"
 
-4 - Run the command "php artisan migrate"
+4 - Run the command "php artisan optimize"
 
-5 - Run command "php artisan serve --port=8080"
+5 - Run the command "php artisan migrate"
 
-6 - Added API Collection in Root folder "API Collection", we can import this collection to postman software
+6 - Run command "php artisan serve --port=8000"
 
-7 - Create a new account/Login
+7 - Added API Collection in Root folder "API Collection", we can import this collection to postman software
 
-8 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
+8 - Create a new account/Login
+
+9 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
 
 ## Screenshot of Task Management for related Task management systems like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
 
