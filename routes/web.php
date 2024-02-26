@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Client\Tasks\TaskController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +24,10 @@ Route::get('/signup', function () {
 Route::get('/', function () {
     return view('user/dashboard');
 })->name('user.dashboard');
+
+
+Route::get('/tasks', function () {
+    return view('task/index');
+})->name('task.index');
+
+Route::post('/tasks/list', [TaskController::class, 'taskList'])->name('task.list');

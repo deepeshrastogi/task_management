@@ -6,6 +6,7 @@ use App\Repositories\Interfaces\Tasks\TaskRepositoryInterface;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\File;
+use App\Models\Task;
 use Validator;
 
 class TaskService
@@ -29,25 +30,30 @@ class TaskService
         $this->taskRepository = $taskRepository;
        
     }
-
+ 
+    // {
+    //     "per_page":10,
+    //     "search":"rastogi1",
+    //     "status":"3"
+    // }
     public function index($requestData)
     {
-        $loginUser = $this->loginUser();
-        $page = $requestData->page;
-        $search = $requestData->search;
-        $status = $requestData->status;
+        $loginUser = $this->loginUser($requestData);
+        $perPage = !empty($requestData->per_page) ? $requestData->per_page  : 10;
+        $search = !empty($requestData->search)?$requestData->search:'';
+        $status = !empty($requestData->status)?$requestData->status:'';
         $tasks = Task::where(['user_id' => $loginUser->id]);
         if(!empty($search)){
-            $tasks = $tasks->where('title',$search);
+            $tasks = $tasks->where('title','LIKE','%'.$search.'%');
         }
         if(!empty($status)){
             $tasks = $tasks->where('status',$status);
         }
         $tasks = $tasks->orderBy('title','asc')
         ->orderBy('created_at','asc')
-        ->paginate($page);
-        // $response = ['user' => $task];
-        // return $this->success(message: 'Your task is created successfully', content: $response);
+        ->paginate($perPage);
+        $response = ['tasks' => $tasks];
+        return $this->success(message: 'Your task has been fetched successfully', content: $response);
     }
 
     /**

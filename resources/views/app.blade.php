@@ -32,6 +32,13 @@
         <script src="{{ asset('task_management/js/custom.js') }}"></script>
         @yield('scripts')
         <script>
+            $(document).ready(function(e) {
+                let token = localStorage.getItem('token');
+                if (!token) {
+                    window.location = "{{ route('user.login') }}";
+                }
+            });
+            
             $(document).on("click", ".logout", function(e) {
                 e.preventDefault(0);
                 logout();

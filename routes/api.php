@@ -24,8 +24,8 @@ Route::group(['middleware' => 'api','as' => 'api.'], function () {
         });
     });
 
-    Route::group(['middleware' => 'auth:sanctum','prefix' => 'task'], function () {
-        Route::get('index', [TaskController::class, 'index']);
+    Route::group(['middleware' => 'auth:sanctum','prefix' => 'task','as' => 'task.'], function () {
+        Route::post('/', [TaskController::class, 'index'])->name('list');
         Route::post('create', [TaskController::class, 'store']);
     });
 });
