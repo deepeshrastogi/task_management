@@ -1,5 +1,7 @@
 @extends('auth.layouts')
-
+@section('title')
+User | Login
+@endsection
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
@@ -8,6 +10,7 @@
                 <div class="card-header">Login</div>
                 <div class="card-body">
                     <form id="loginForm">
+                        <div class="auth_error"></div>
                         <div class="mb-3 row">
                             <label for="email" class="col-md-4 col-form-label text-md-end text-start">Email <span class="error">*</span></label>
                             <div class="col-md-6">
@@ -23,6 +26,7 @@
                         </div>
                         <div class="mb-3 row">
                             <button type="button" class="col-md-3 offset-md-5 btn btn-primary login">Login</button>
+                            <a href="{{ route('user.signup') }}" class="mt-2 col-md-4 offset-md-4 btn btn-link">Click here to sign up</a>
                         </div>
 
                     </form>
@@ -60,9 +64,14 @@
             }).fail(function(data) {
                 $("#loginForm").find(".text-danger").remove();
                 $.each(data.responseJSON.error, function(key, value) {
-                    let error = `<span class="text-danger">` + value[0] + `</span>`;
-                    $("#loginForm").find("." + key).addClass("is-invalid");
-                    $("#loginForm").find("." + key).after(error);
+                    if(value == "Unauthorized"){
+                        let error = `<div class="alert alert-danger" role="alert">`+value+`</div>`;
+                        $("#loginForm").find(".auth_error").html(error);
+                    }else{
+                        let error = `<span class="text-danger">` + value[0] + `</span>`;
+                        $("#loginForm").find("." + key).addClass("is-invalid");
+                        $("#loginForm").find("." + key).after(error);
+                    }
                 });
             });
         }

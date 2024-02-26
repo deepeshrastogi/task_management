@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Client\Tasks\TaskController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,4 +29,15 @@ Route::get('/tasks', function () {
     return view('task/index');
 })->name('task.index');
 
-Route::post('/tasks/list', [TaskController::class, 'taskList'])->name('task.list');
+Route::get('/tasks/create', function () {
+    return view('task/create');
+})->name('task.create');
+
+Route::get('/sub-task/create', function () {
+    return view('task/subtask-create');
+})->name('task.subtask.create');
+
+
+Route::get('/tasks/{id}', function () {
+    return view('task/show');
+})->name('task.show');

@@ -1,8 +1,36 @@
 @extends('app')
-
+@section('title')
+Task | Lists
+@endsection
 @section('content')
     <div class="row justify-content-center mt-5">
-        <div class="col-md-11">
+        <div class="col-md-11" id="app">
+           {{-- @{{ tasks }} --}}
+           <div class="no_of_record">
+                <div class="row mb-5">
+                    <div class="col-md-2">
+                        Record
+                        <select v-model="no_of_record" @change="noOfRecordNeeded()">
+                            <option v-for="pageOpt in pageOptions" :key="pageOpt">@{{pageOpt}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        Status
+                        <select v-model="status" @change="searchByStatus">
+                            <option :key="0" :value="0">all</option>
+                            <option v-for="(status,index) in statusArr" :key="index" :value="index">@{{ status }}</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        Search
+                        <input type="text" v-model="search" @keyup="searchByTitle" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-info btn-sm" title="Reset filter" @click="resetFilter"><span class="fas fa-eraser"></span></button>
+                    </div>
+                </div>
+            </div>
             <table class="table">
                 <tr>
                     <th>Id</th>
@@ -12,114 +40,219 @@
                     <th>Progress</th>
                     <th>Action</th>
                 </tr>
-                <tr>
-                    <td>
-                        <button class="btn btn-sm row_1_plus"><span class="fa fa-plus"></span></button> 
-                        <button class="btn btn-sm row_1_minus d-none"><span class="fa fa-minus"></span></button> 
-                        1
+                <tr v-if="!tasks.length">
+                    <td colspan="6" class="text-center"><i>Sorry, No Task found</i></td>
+                </tr>
+                <tr v-else v-for="task in tasks" :key="task.id">
+                    <td>TASK_@{{ task.id }}
                     </td>
-                    <td>Title</td>
-                    <td>Content</td>
+                    <td>@{{ task.title }}</td>
+                    <td>@{{ task.content }}</td>
                     <td>
-                        <select>
-                            <option>To Do</option>
-                            <option>Inprogress</option>
-                            <option>Done</option>
+                        <select v-model="task.status" id="updateStatus" :data-id="task.id">
+                            <option v-for="(statusVal,index) in statusArr" :key="index" :value="statusVal">@{{ statusVal }}</option>
                         </select>
                     </td>
                     <td>
 
                         <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar" role="progressbar" :style="{width:statusPercentageArr[task.status]+'%'}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <center>30%</center>
+                        <center>@{{ statusPercentageArr[task.status] }}%</center>
                     </td>
                     <td>
-                        <button class="btn btn-sm btn-info"><span class="fa fa-eye"></span></button>
-                        <button class="btn btn-sm btn-success"><span class="fa fa-edit"></span></button>
-                        <button class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>
+                        <button class="btn btn-sm btn-info" @click="show(task.id)"><span class="fa fa-eye"></span></button> &nbsp;
+                        <button class="btn btn-sm btn-danger" @click="deleteTask(task.id)"><span class="fa fa-trash"></span></button>
                     </td>
                 </tr>
-                    <tr class="row_1_child d-none">
-                        <td> &nbsp; 
-                            1
-                        </td>
-                        <td>Title</td>
-                        <td>Content</td>
-                        <td>
-                            <select class="form-control">
-                                <option>To Do</option>
-                                <option>Inprogress</option>
-                                <option>Done</option>
-                            </select>
-                        </td>
-                        <td>
-    
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="33.33" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <center>30%</center>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-info"><span class="fa fa-eye"></span></button>
-                            <button class="btn btn-sm btn-success"><span class="fa fa-edit"></span></button>
-                            <button class="btn btn-sm btn-danger"><span class="fa fa-trash"></span></button>
-                        </td>
-                    </tr> 
                 </span>
             </table>
+            <div v-if="tasks.length">
+                <nav class="text-center" aria-label="Page navigation example" v-if="pagination.from != pagination.last_page">
+                    <ul class="pagination">
+                        <li class="page-item" v-if="pagination.current_page > 1">
+                            <a class="page-link" href="#" aria-label="Previous" @click.prevent="changePage(pagination.current_page - 1)">
+                                <span aria-hidden="true">«</span>
+                            </a>
+                        </li>
+                        <li class="page-item" v-for="page in pagesNumber" :key="page" :class="[ page == isActived ? 'active' : '']">
+                            <a class="page-link" href="javascript:void(0)" @click.prevent="changePage(page)">@{{ page }}</a>
+                        </li>
+                        <li class="page-item" v-if="pagination.current_page < pagination.last_page">
+                            <a class="page-link" href="#" aria-label="Next" @click.prevent="changePage(pagination.current_page + 1)">
+                                <span aria-hidden="true">»</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('scripts')
     <script>
-       $(document).ready(function(){
-            getTasksList();
-       });
+        let token = localStorage.getItem("token");
+        let taskListApiUrl = "{{ route('api.task.list') }}";
+        let updateTaskApiUrl = "{{ route('api.task.updateTaskStatus') }}";
+        let appUrl = "{{ url('/') }}";
 
-       function getTasksList(){
-            let ajaxUrl = "{{ route('task.list') }}";
-            let apiToken = localStorage.getItem('token');
-            let apiURL = "{{ route('api.task.list') }}";
-            var formData = new FormData();
-            formData.append('api_url',apiURL);
-            formData.append('_token','{{ csrf_token() }}');
-            formData.append('api_token',apiToken);
-            formData.append('per_page',10);
-            formData.append('search','');
-            formData.append('status','');
-            
-            let response = ajaxCall(ajaxUrl, formData);
-            response.done(function(data) {
-                localStorage.setItem('token', data.content.token);
-                localStorage.setItem('user', JSON.stringify(data.content.user));
-                window.location = "{{ route('user.dashboard') }}";
-            }).fail(function(data) {
-                $("#loginForm").find(".text-danger").remove();
-                $.each(data.responseJSON.error, function(key, value) {
-                    let error = `<span class="text-danger">` + value[0] + `</span>`;
-                    $("#loginForm").find("." + key).addClass("is-invalid");
-                    $("#loginForm").find("." + key).after(error);
-                });
-            });
-       }
-        // $(document).on("click", ".login", function(e) {
-        //     // e.preventDefault();
-        //     // login();
-        // });
-        // $(document).on("click", ".row_1_plus", function(e) {
-        //     $(this).addClass("d-none");
-        //     $(".row_1_minus").removeClass("d-none");
-        //     $(".row_1_child").removeClass("d-none");
-        //     $(".row_1_child").fadeIn('1000');
-        // });
+        $(document).on("change", "#updateStatus", function(e) {
+            e.preventDefault();
+            let status = $(this).val();
+            let id = $(this).data('id');
+            app.updateTaskStatus(id,status);
+        });
 
-        // $(document).on("click", ".row_1_minus", function(e) {
-        //     $(this).addClass("d-none");
-        //     $(".row_1_plus").removeClass("d-none");
-        //     $(".row_1_child").addClass("d-none");
-        //     $(".row_1_child").fadeOut('1000');
-        // });
-    </script>
+        const { createApp} = Vue;
+        let app = createApp({
+            data() {
+                return {
+                    pageOptions :[10,20,30,50,100,200,400],
+                    tasksData: [],
+                    tasks:[],
+                    statusArr:{
+                        1 : "done",
+                        2 : "in-progress",
+                        3 : "to-do",
+                    },
+                    pagination: {
+                        total: 0,
+                        per_page: 10,
+                        last_page: 0,
+                        from: 1,
+                        to: 10,
+                        current_page: 1
+                    },
+                    offset:10,
+                    no_of_record:10,
+                    status:0,
+                    search:'',
+                    statusPercentageArr:{
+                        'to-do':0,
+                        'in-progress':50,
+                        'done':100,
+                    },
+                }
+            },
+            watch:{
+                'pagination.per_page': function(){
+                    this.pagination.current_page = 1;
+                }
+            },
+            computed:{
+                isActived: function () {
+                    return this.pagination.current_page;
+                },
+                pagesNumber: function () {
+                    const numShown = Math.min(this.pagination.per_page, this.pagination.last_page);
+                    let first = this.pagination.current_page - Math.floor(numShown / 2);
+                    first = Math.max(first, 1);
+                    first = Math.min(first, this.pagination.last_page - numShown + 1);
+                    return [...Array(numShown)].map((k,i) => i + first);
+                }
+            },
+            mounted(){
+                this.getTaskList();
+            },
+            methods: {
+                getTaskList(){
+                    let bodyData = {
+                        'page': this.pagination.current_page,
+                        'per_page': this.no_of_record,
+                        'status': this.status,
+                        'search': this.search,
+                    }
+                    fetch(taskListApiUrl,{
+                        method:"POST",
+                        headers: {
+                            "Content-type": "application/json",
+                            "accept": "application/json",
+                            "Authorization":"Bearer "+token
+                        },
+                        body:JSON.stringify(bodyData)
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        this.tasksData = result;
+                        let tasks = this.tasksData.content.tasks;
+                        if(tasks.data.length > 0){
+                            this.tasks = tasks.data;
+                        }else{
+                            this.tasks = [];
+                        }
+                        this.pagination.total = tasks.total;
+                        this.pagination.per_page = tasks.per_page;
+                        this.pagination.last_page = tasks.last_page;
+                        this.pagination.from = tasks.from;
+                        this.pagination.to = tasks.to;
+                        this.pagination.current_page = tasks.current_page;
+                    });
+                },
+                changePage(page){
+                    this.pagination.current_page = page;
+                    this.getTaskList();
+                },
+                noOfRecordNeeded(){
+                    this.pagination.per_page = this.no_of_record;
+                    this.pagination.current_page = 1;
+                    this.getTaskList();
+                },
+                searchByStatus(){
+                    this.pagination.current_page = 1;
+                    this.getTaskList();
+                },
+                searchByTitle(){
+                    this.pagination.current_page = 1;
+                    this.getTaskList();
+                },
+                resetFilter(){
+                    this.pagination.current_page = 1;
+                    this.no_of_record = 10;
+                    this.status = 0;
+                    this.search = '';
+                    this.getTaskList();
+                },
+                updateTaskStatus(id,status){
+                    let bodyData = {
+                        'id': id,
+                        'status': status,
+                    }
+                    fetch(updateTaskApiUrl,{
+                        method:"PATCH",
+                        headers: {
+                            "Content-type": "application/json",
+                            "accept": "application/json",
+                            "Authorization":"Bearer "+token
+                        },
+                        body:JSON.stringify(bodyData)
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        // console.log(result);
+                    });
+                },
+                show(id){
+                    window.location = appUrl+'/tasks/'+id; 
+                },
+                deleteTask(id){
+                    let deleteApiUrl = appUrl+`/api/task/`+id;
+                    fetch(deleteApiUrl,{
+                        method:"DELETE",
+                        headers: {
+                            "Content-type": "application/json",
+                            "accept": "application/json",
+                            "Authorization":"Bearer "+token
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(result => {
+                        alert("Record delete successfully");
+                        this.getTaskList();
+                    });
+                },
+
+            },
+        }).mount('#app')
+      </script>
 @endsection

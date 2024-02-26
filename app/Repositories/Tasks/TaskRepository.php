@@ -17,4 +17,9 @@ class TaskRepository implements TaskRepositoryInterface
         $task = Task::create($taskData);
         return $task;
     }
+
+    public function getTask($id){
+        $task = Task::find($id);
+        return $task;
+    }
 }

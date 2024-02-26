@@ -7,5 +7,6 @@ namespace App\Repositories\Interfaces\Tasks;
  */
 interface TaskRepositoryInterface
 {
-    public function storeTask($userData);
+    public function storeTask($taskData);
+    public function getTask($id);
 }

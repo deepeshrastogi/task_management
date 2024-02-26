@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Server\Users\UserAuthController;
 use App\Http\Controllers\Server\Tasks\TaskController;
+use App\Http\Controllers\Server\Tasks\SubTaskController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -26,6 +27,11 @@ Route::group(['middleware' => 'api','as' => 'api.'], function () {
 
     Route::group(['middleware' => 'auth:sanctum','prefix' => 'task','as' => 'task.'], function () {
         Route::post('/', [TaskController::class, 'index'])->name('list');
-        Route::post('create', [TaskController::class, 'store']);
+        Route::get('/{id}', [TaskController::class, 'show'])->name('show');
+        Route::delete('/{id}', [TaskController::class, 'destroy'])->name('delete');
+        Route::post('create', [TaskController::class, 'store'])->name('create');
+        Route::patch('update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
+        Route::get('list/name', [TaskController::class, 'getTaskNameList'])->name('getTaskNameList');
+        Route::post('sub-task/create', [SubTaskController::class, 'store'])->name('subtask.create');
     });
 });

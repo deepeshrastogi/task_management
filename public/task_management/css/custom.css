@@ -24,3 +24,10 @@ label.required:after {
 .inline-flex{
     display: inline;
 }
+
+body,select{
+    text-transform: capitalize;
+}
+.error.text-danger{
+    text-transform: math-auto !important;
+}

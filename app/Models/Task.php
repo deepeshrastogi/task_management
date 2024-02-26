@@ -55,4 +55,12 @@ class Task extends Model
         $this->attributes['status'] = $newStatusArr[$value];
     }
 
+    public function subTasks(){
+        return $this->hasMany(SubTask::class,'task_id','id');
+    }
+
+    public static function getTaskCount(){
+        return Task::whereNull('task_id')->count();
+    }
+
 }

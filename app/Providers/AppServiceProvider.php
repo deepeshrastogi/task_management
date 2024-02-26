@@ -7,6 +7,8 @@ use App\Repositories\Users\UserRepository;
 use App\Repositories\Interfaces\Users\UserRepositoryInterface;
 use App\Repositories\Tasks\TaskRepository;
 use App\Repositories\Interfaces\Tasks\TaskRepositoryInterface;
+use App\Repositories\Tasks\SubTaskRepository;
+use App\Repositories\Interfaces\Tasks\SubTaskRepositoryInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->registerUserRepo();
         $this->registerTaskRepo();
+        $this->registerSubTaskRepo();
     }
 
     public function registerUserRepo() {
@@ -25,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function registerTaskRepo() {
         $this->app->bind(TaskRepositoryInterface::class, TaskRepository::class);
+    }
+
+    public function registerSubTaskRepo() {
+        $this->app->bind(SubTaskRepositoryInterface::class, SubTaskRepository::class);
     }
 
     /**

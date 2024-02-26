@@ -58,17 +58,32 @@ class TaskController extends Controller
     }
 
 
-    public function update(Request $request)
+    /**
+     * destroy through get
+     * @return [json] \Illuminate\Http\Response
+     */
+    public function destroy(Request $request,$id)
     {
-        return $this->taskService->update($request);
+        return $this->taskService->destroy($request,$id);
+    }
+
+     /**
+     * Logout through get
+     * @return [json] \Illuminate\Http\Response
+     */
+    public function updateTaskStatus(Request $request)
+    {
+        return $this->taskService->updateTaskStatus($request);
     }
 
     /**
      * Logout through get
      * @return [json] \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function getTaskNameList(Request $request)
     {
-        return $this->taskService->destroy($request);
+        return $this->taskService->getTaskNameList($request);
     }
+
+    
 }

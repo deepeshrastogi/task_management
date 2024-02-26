@@ -30,25 +30,43 @@
         <script src="{{ asset('task_management/js/scripts.js') }}"></script>
         <script src="{{ asset('task_management/js/jquery.min.js') }}"></script>
         <script src="{{ asset('task_management/js/custom.js') }}"></script>
+        <script src="{{ asset('task_management/js/vue.global.js') }}"></script>
+        <script src="{{ asset('task_management/js/axios.min.js') }}"></script>
+        
         @yield('scripts')
         <script>
+            token = localStorage.getItem('token');
+            var user = localStorage.getItem('user');
+            var userObject = JSON.parse(user);
             $(document).ready(function(e) {
-                let token = localStorage.getItem('token');
+                let userHtml = `<i class="fas fa-user fa-fw"></i>`+userObject.name+`</a>`;
+                $(".user_details").html(userHtml);
                 if (!token) {
                     window.location = "{{ route('user.login') }}";
                 }
             });
             
-            $(document).on("click", ".logout", function(e) {
+            $(document).on("click", ".logoutBtn", function(e) {
                 e.preventDefault(0);
                 logout();
             });
 
             function logout(){
-                let token = localStorage.getItem('token');
                 apiUrl = "{{ route('api.user.logout') }}";
-                // localStorage.clear();
-                // window.location = "{{ route('user.login') }}";
+                fetch(apiUrl,{
+                    method:"GET",
+                    headers: {
+                        "Content-type": "application/json",
+                        "accept": "application/json",
+                        "Authorization":"Bearer "+token
+                    }
+                })
+                .then(res => res.json())
+                .then(result => {
+                    window.location = "{{ route('user.login') }}";
+                });
+                localStorage.clear();
+               
             }
         </script>
     </body>

@@ -1,5 +1,7 @@
 @extends('auth.layouts')
-
+@section('title')
+User | Signup
+@endsection
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
@@ -37,6 +39,7 @@
                         </div>
                         <div class="mb-3 row">
                             <button type="button" class="col-md-3 offset-md-5 btn btn-primary singUp">Sign Up</button>
+                            <a href="{{ route('user.login') }}" class="mt-2 col-md-4 offset-md-4 btn btn-link">Click here to login</a>
                         </div>
 
                     </form>
