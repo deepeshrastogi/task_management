@@ -66,7 +66,9 @@ class TaskService
         if(array_key_exists("task_id",$requestData->toArray())){
             $validateArr = array_merge($validateArr,['task_id' => 'required']);
         }
-        $validator = Validator::make($requestData->all(), $validateArr);
+        $validator = Validator::make($requestData->all(), $validateArr,[
+            'task_id.required' => 'The task field is required.'
+        ]);
         if ($validator->fails()) {
             return $this->error($validator->errors(), 401);
         }
@@ -167,5 +169,25 @@ class TaskService
         $task = Task::select('id','title')->whereNull('task_id')->get();
         $data = ["task" => $task];
         return $this->success(message: 'Task List has been fetched successfully', content: $data);
+    }
+
+    public function trashedTasks($requestData)
+    {
+        $loginUser = $this->loginUser($requestData);
+        $perPage = !empty($requestData->per_page) ? $requestData->per_page  : 10;
+        $search = !empty($requestData->search)?$requestData->search:'';
+        $status = !empty($requestData->status)?$requestData->status:'';
+        $tasks = Task::where(['user_id' => $loginUser->id])->whereNull('task_id')->onlyTrashed();
+        if(!empty($search)){
+            $tasks = $tasks->where('title','LIKE','%'.$search.'%');
+        }
+        if(!empty($status)){
+            $tasks = $tasks->where('status',$status);
+        }
+        $tasks = $tasks->orderBy('title','asc')
+        ->orderBy('created_at','asc')
+        ->paginate($perPage);
+        $response = ['tasks' => $tasks];
+        return $this->success(message: 'Your trashed task has been fetched successfully', content: $response);
     }
 }

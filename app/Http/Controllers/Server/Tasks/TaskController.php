@@ -68,7 +68,7 @@ class TaskController extends Controller
     }
 
      /**
-     * Logout through get
+     * update task status through patch
      * @return [json] \Illuminate\Http\Response
      */
     public function updateTaskStatus(Request $request)
@@ -77,12 +77,21 @@ class TaskController extends Controller
     }
 
     /**
-     * Logout through get
+     * getTaskNameList through get
      * @return [json] \Illuminate\Http\Response
      */
     public function getTaskNameList(Request $request)
     {
         return $this->taskService->getTaskNameList($request);
+    }
+
+    /**
+     * trashTasks through get
+     * @return [json] \Illuminate\Http\Response
+     */
+    public function trashedTasks(Request $request)
+    {
+        return $this->taskService->trashedTasks($request);
     }
 
     

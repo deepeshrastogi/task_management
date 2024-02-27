@@ -32,6 +32,7 @@ Route::group(['middleware' => 'api','as' => 'api.'], function () {
         Route::post('create', [TaskController::class, 'store'])->name('create');
         Route::patch('update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
         Route::get('list/name', [TaskController::class, 'getTaskNameList'])->name('getTaskNameList');
+        Route::post('/trashed', [TaskController::class, 'trashedTasks'])->name('trashed.list');
         Route::post('sub-task/create', [SubTaskController::class, 'store'])->name('subtask.create');
     });
 });

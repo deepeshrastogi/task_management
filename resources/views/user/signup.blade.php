@@ -69,6 +69,34 @@ User | Signup
             let email = $("#signupForm").find("#email").val();
             let password = $("#signupForm").find("#password").val();
             let confirm_password = $("#signupForm").find("#confirm_password").val();
+            let errors = checkValidations(email,password,name,confirm_password);
+            if('email' in errors || 'password' in errors || 'name' in errors || 'confirm_password' in errors){
+                $("#signupForm").find(".text-danger").remove();
+                if('email' in errors){
+                    let error = `<span class="text-danger">` + errors['email'] + `</span>`;
+                    $("#signupForm").find(".email").addClass("is-invalid");
+                    $("#signupForm").find(".email").after(error);
+                }
+
+                if('password' in errors){
+                    let error = `<span class="text-danger">` + errors['password'] + `</span>`;
+                    $("#signupForm").find(".password").addClass("is-invalid");
+                    $("#signupForm").find(".password").after(error);
+                }
+
+                if('name' in errors){
+                    let error = `<span class="text-danger">` + errors['name'] + `</span>`;
+                    $("#signupForm").find(".name").addClass("is-invalid");
+                    $("#signupForm").find(".name").after(error);
+                }
+
+                if('confirm_password' in errors){
+                    let error = `<span class="text-danger">` + errors['confirm_password'] + `</span>`;
+                    $("#signupForm").find(".confirm_password").addClass("is-invalid");
+                    $("#signupForm").find(".confirm_password").after(error);
+                }
+                return false;
+            }
             formData.append('name', name);
             formData.append('email', email);
             formData.append('password', password);
@@ -86,6 +114,35 @@ User | Signup
                     $("#signupForm").find("." + key).after(error);
                 });
             });
+        }
+
+        function checkValidations(email,password,name,confirm_password){
+            let errors = [];
+            if(!checkEmail(email)){
+                errors['email'] = ['The email is invalid.'];
+            }
+
+            if(isEmpty(email)){
+                errors['email'] = ['The email field is required.'];
+            }
+
+            if(isEmpty(password)){
+                errors['password'] = ['The password field is required.'];
+            }
+
+            if(isEmpty(name)){
+                errors['name'] = ['The name field is required.'];
+            }
+            
+            if(isEmpty(confirm_password)){
+                errors['confirm_password'] = ['The confirm password field is required.'];
+            }
+
+            if(confirm_password != password){
+                errors['confirm_password'] = ['The confirm password field must match password.'];
+            }
+
+            return errors;
         }
     </script>
 @endsection

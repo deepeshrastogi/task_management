@@ -37,7 +37,11 @@ Route::get('/sub-task/create', function () {
     return view('task/subtask-create');
 })->name('task.subtask.create');
 
+Route::get('/tasks/trashed', function () {
+    return view('task/trashed');
+})->name('task.trashed');
 
 Route::get('/tasks/{id}', function () {
     return view('task/show');
 })->name('task.show');
+

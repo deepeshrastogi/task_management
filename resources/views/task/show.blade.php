@@ -13,7 +13,7 @@ Task | Details
             <div class="row">
                 <div class="col-4">
                     <form>
-                        <h3>Task Details</h3>
+                        <h4 class="mb-3"><u>Task Details</u></h4>
                         <div class="mb-3" v-if="task.attachment.length">
                             <img :src="task.attachment" class="img img-thumbnail"/>
                         </div>
@@ -44,7 +44,7 @@ Task | Details
                 </div>
 
                 <div class="col-8">
-                    <h3>Sub Tasks</h3>
+                    <h4 class="mb-3"><u>Sub Tasks</u></h4>
                     <table class="table">
                         <tr>
                             <th>Id</th>

@@ -5,7 +5,7 @@ Sub-Task |Create
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
-            <h3>Create Sub Task</h3>
+            <h4 class="mb-3"><u>Create Sub Task</u></h4>
             <form method="POST" @submit.prevent="createTask" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-6">
@@ -61,6 +61,7 @@ Sub-Task |Create
                     task:{
                         task_id : "",
                         title : "",
+                        status : "",
                         content : "",
                         is_published : "0",      
                     },
@@ -108,6 +109,12 @@ Sub-Task |Create
                     })
                 },
                 createTask(event){
+                    // check validation
+                    this.checkValidations();
+                    if('task_id' in this.formErrors || 'title' in this.formErrors || 'status' in this.formErrors || 'content' in this.formErrors){
+                        return false;
+                    }
+
                     var formData = new FormData();
                     for ( var key in this.task ) {
                         formData.append(key, this.task[key]);
@@ -136,6 +143,23 @@ Sub-Task |Create
                 onFileChange:function(e){
                     this.attachment = e.target.files[0];
                 },
+                checkValidations:function(e){
+                    this.formErrors = [];
+                    if(isEmpty(this.task.task_id)){
+                        this.formErrors['task_id'] = ['The task field is required.'];
+                    }
+                    if(isEmpty(this.task.title)){
+                        this.formErrors['title'] = ['The title field is required.'];
+                    }
+
+                    if(isEmpty(this.task.status)){
+                        this.formErrors['status'] = ['The status field is required.'];
+                    }
+
+                    if(isEmpty(this.task.content)){
+                        this.formErrors['content'] = ['The content field is required.'];
+                    }
+                }
             },
         }).mount('#app')
       </script>

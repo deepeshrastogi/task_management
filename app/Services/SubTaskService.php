@@ -62,6 +62,8 @@ class SubTaskService
             'content' => 'required',
             'status' => 'required',
             'attachment' => 'image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',
+        ],[
+            'task_id.required' => 'The task field is required.'
         ]);
         if ($validator->fails()) {
             return $this->error($validator->errors(), 401);

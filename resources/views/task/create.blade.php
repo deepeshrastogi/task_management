@@ -5,7 +5,7 @@ Task | Create
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
-            <h3>Create Task</h3>
+            <h4 class="mb-3"><u>Create Task</u></h4>
             <form method="POST" @submit.prevent="createTask" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-6">
@@ -52,8 +52,9 @@ Task | Create
                 return {
                     task:{
                         title : "",
+                        status : "",
                         content : "",
-                        is_published : "0",      
+                        is_published : "0",  
                     },
                     statusArr:{
                         1 : "done",
@@ -63,6 +64,8 @@ Task | Create
                     attachment:"",
                     publish_status:"",
                     formErrors:[],
+                    email:'',
+                    password:'',
                 }
             },
             computed:{
@@ -80,7 +83,12 @@ Task | Create
                 
             },
             methods: {
-                createTask(event){
+                async createTask(event){
+                    // check validation
+                    this.checkValidations();
+                    if('title' in this.formErrors || 'status' in this.formErrors || 'content' in this.formErrors){
+                        return false;
+                    }
                     var formData = new FormData();
                     for ( var key in this.task ) {
                         formData.append(key, this.task[key]);
@@ -96,7 +104,7 @@ Task | Create
                             'Authorization':'Bearer '+token
                         }
                     }
-                    axios.post(createTaskApiUrl, formData, config).then(response => {
+                    await axios.post(createTaskApiUrl, formData, config).then(response => {
                        if(response.status){
                             alert(response.data.message);
                             this.task = {};
@@ -109,6 +117,20 @@ Task | Create
                 onFileChange:function(e){
                     this.attachment = e.target.files[0];
                 },
+                checkValidations:function(e){
+                    this.formErrors = [];
+                    if(isEmpty(this.task.title)){
+                        this.formErrors['title'] = ['The title field is required.'];
+                    }
+
+                    if(isEmpty(this.task.status)){
+                        this.formErrors['status'] = ['The status field is required.'];
+                    }
+
+                    if(isEmpty(this.task.content)){
+                        this.formErrors['content'] = ['The content field is required.'];
+                    }
+                }
             },
         }).mount('#app')
       </script>

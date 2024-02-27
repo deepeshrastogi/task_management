@@ -16,6 +16,32 @@ function ajaxCall(url,data,type="POST"){
     });
 }
 
+function checkEmail(email) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
+        return true;
+    }
+    return false;
+}
+
+function minLength(name,minLength) {
+    if(name.length < minLength){
+            return false;
+    }
+    return true;
+}
+
+function isEmpty(string){
+    console.log("d",string);
+    if(typeof(string) === 'number'){
+        return false;
+    }else if(typeof(string) === 'undefined'){
+        return false;
+    }else if(string.length){
+        return false;
+    }
+    return true;
+}
+
 $(document).ready(function(){
     setTimeout(() => {
         $('.alertMessage').fadeOut('slow');

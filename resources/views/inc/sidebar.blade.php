@@ -17,6 +17,7 @@
                         <a href="{{ route('task.index') }}" class="nav-link">Tasks List</a>
                         <a href="{{ route('task.create') }}" class="nav-link">Create Task</a>
                         <a href="{{ route('task.subtask.create') }}" class="nav-link">Create Sub Task</a>
+                        <a href="{{ route('task.trashed') }}" class="nav-link">Trash</a>
                     </nav>
                 </div>
 

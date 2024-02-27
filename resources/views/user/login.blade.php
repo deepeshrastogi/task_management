@@ -54,6 +54,22 @@ User | Login
             var formData = new FormData();
             let email = $("#loginForm").find("#email").val();
             let password = $("#loginForm").find("#password").val();
+            let errors = checkValidations(email,password);
+            if('email' in errors || 'password' in errors){
+                $("#loginForm").find(".text-danger").remove();
+                if('email' in errors){
+                    let error = `<span class="text-danger">` + errors['email'] + `</span>`;
+                    $("#loginForm").find(".email").addClass("is-invalid");
+                    $("#loginForm").find(".email").after(error);
+                }
+
+                if('password' in errors){
+                    let error = `<span class="text-danger">` + errors['password'] + `</span>`;
+                    $("#loginForm").find(".password").addClass("is-invalid");
+                    $("#loginForm").find(".password").after(error);
+                }
+                return false;
+            }
             formData.append('email', email);
             formData.append('password', password);
             let response = ajaxCall(apiUrl, formData);
@@ -74,6 +90,22 @@ User | Login
                     }
                 });
             });
+        }
+
+        function checkValidations(email,password){
+            let errors = [];
+            if(!checkEmail(email)){
+                errors['email'] = ['The email is invalid.'];
+            }
+
+            if(isEmpty(email)){
+                errors['email'] = ['The email field is required.'];
+            }
+
+            if(isEmpty(password)){
+                errors['password'] = ['The password field is required.'];
+            }
+            return errors;
         }
     </script>
 @endsection

@@ -31,7 +31,7 @@ Task | Lists
                     </div>
                 </div>
             </div>
-            <h4 class="mb-3"><u>Tasks List</u></h4>
+            <h4 class="mb-3"><u>Trashed Tasks List</u></h4>
             <table class="table">
                 <tr>
                     <th>Id</th>
@@ -39,7 +39,6 @@ Task | Lists
                     <th>Content</th>
                     <th>Status</th>
                     <th>Progress</th>
-                    <th>Action</th>
                 </tr>
                 <tr v-if="!tasks.length">
                     <td colspan="6" class="text-center"><i>Sorry, No Task found</i></td>
@@ -49,21 +48,12 @@ Task | Lists
                     </td>
                     <td>@{{ task.title }}</td>
                     <td>@{{ task.content }}</td>
+                    <td>@{{ task.status }}</td>
                     <td>
-                        <select v-model="task.status" id="updateStatus" :data-id="task.id">
-                            <option v-for="(statusVal,index) in statusArr" :key="index" :value="statusVal">@{{ statusVal }}</option>
-                        </select>
-                    </td>
-                    <td>
-
                         <div class="progress">
                             <div class="progress-bar" role="progressbar" :style="{width:statusPercentageArr[task.status]+'%'}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <center>@{{ statusPercentageArr[task.status] }}%</center>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-info" @click="show(task.id)"><span class="fa fa-eye"></span></button> &nbsp;
-                        <button class="btn btn-sm btn-danger" @click="deleteTask(task.id)"><span class="fa fa-trash"></span></button>
                     </td>
                 </tr>
                 </span>
@@ -94,17 +84,7 @@ Task | Lists
 @section('scripts')
     <script>
         let token = localStorage.getItem("token");
-        let taskListApiUrl = "{{ route('api.task.list') }}";
-        let updateTaskApiUrl = "{{ route('api.task.updateTaskStatus') }}";
-        let appUrl = "{{ url('/') }}";
-
-        $(document).on("change", "#updateStatus", function(e) {
-            e.preventDefault();
-            let status = $(this).val();
-            let id = $(this).data('id');
-            app.updateTaskStatus(id,status);
-        });
-
+        let taskListApiUrl = "{{ route('api.task.trashed.list') }}";
         const { createApp} = Vue;
         let app = createApp({
             data() {
@@ -213,46 +193,7 @@ Task | Lists
                     this.status = 0;
                     this.search = '';
                     this.getTaskList();
-                },
-                updateTaskStatus(id,status){
-                    let bodyData = {
-                        'id': id,
-                        'status': status,
-                    }
-                    fetch(updateTaskApiUrl,{
-                        method:"PATCH",
-                        headers: {
-                            "Content-type": "application/json",
-                            "accept": "application/json",
-                            "Authorization":"Bearer "+token
-                        },
-                        body:JSON.stringify(bodyData)
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        // console.log(result);
-                    });
-                },
-                show(id){
-                    window.location = appUrl+'/tasks/'+id; 
-                },
-                deleteTask(id){
-                    let deleteApiUrl = appUrl+`/api/task/`+id;
-                    fetch(deleteApiUrl,{
-                        method:"DELETE",
-                        headers: {
-                            "Content-type": "application/json",
-                            "accept": "application/json",
-                            "Authorization":"Bearer "+token
-                        }
-                    })
-                    .then(res => res.json())
-                    .then(result => {
-                        alert("Record delete successfully");
-                        this.getTaskList();
-                    });
-                },
-
+                }
             },
         }).mount('#app')
       </script>
