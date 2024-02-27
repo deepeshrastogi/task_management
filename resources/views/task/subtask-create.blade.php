@@ -89,6 +89,7 @@ Sub-Task |Create
             },
             mounted(){
                 this.getTask();
+                $(".loader_container").hide();
             },
             methods: {
                 getTask(){

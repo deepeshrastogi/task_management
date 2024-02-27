@@ -138,6 +138,7 @@ Task | Lists
             },
             methods: {
                 getTaskList(){
+                    $(".loader_container").show();
                     let queryParams = {
                         'page': this.pagination.current_page,
                         'per_page': this.no_of_record,
@@ -169,6 +170,7 @@ Task | Lists
                         this.pagination.from = tasks.from;
                         this.pagination.to = tasks.to;
                         this.pagination.current_page = tasks.current_page;
+                        $(".loader_container").hide();
                     });
                 },
                 changePage(page){

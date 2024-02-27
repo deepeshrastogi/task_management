@@ -80,7 +80,7 @@ Task | Create
                 }
             },
             mounted(){
-                
+                 $(".loader_container").hide();
             },
             methods: {
                 async createTask(event){

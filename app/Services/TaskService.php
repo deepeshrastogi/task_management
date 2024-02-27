@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\Tasks\SubTaskRepositoryInterface;
 use App\Repositories\Interfaces\Tasks\TaskRepositoryInterface;
 use App\Traits\ApiResponse;
+use App\Jobs\TaskAttachmentJob;
 use Validator;
 
 class TaskService
@@ -51,7 +52,8 @@ class TaskService
     public function store($requestData)
     {
         $validateArr = [
-            'title' => 'required|max:100|unique:task',
+            // 'title' => 'required|max:100|unique:task',
+            'title' => 'required|max:100',
             'content' => 'required',
             'status' => 'required',
             'attachment' => 'image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',
@@ -74,21 +76,12 @@ class TaskService
         if (!empty($requestData->task_id)) {
             $taskData['task_id'] = $requestData->task_id;
         }
-
         if ($requestData->hasfile('attachment')) {
-            $destinationPath = public_path('uploads');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true); // Create the directory recursively
-            }
-            $attachFile = $requestData->file('attachment');
-            $fileExtension = time() . '.' . $attachFile->getClientOriginalExtension();
-            $uniqueFname = rand() . time() . "_" . $fileExtension;
-            $attachFile->move($destinationPath, $uniqueFname);
-            $pulicUrlPath = url('/') . '/uploads/' . $uniqueFname;
-            $taskData['attachment'] = $pulicUrlPath;
+            TaskAttachmentJob::dispatch($requestData); //upload data through queue
+            $task = (object)[];
+        }else{
+            $task = $this->taskRepository->storeTask($taskData);
         }
-
-        $task = $this->taskRepository->storeTask($taskData);
         $response = ['user' => $task];
         return $this->success(message: 'Your task is created successfully', content: $response);
     }

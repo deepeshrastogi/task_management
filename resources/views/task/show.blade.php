@@ -138,7 +138,6 @@ Task | Details
             },
             methods: {
                 createTask() {
-                    // var formData = new FormData();
                     const config = {
                         headers: {
                             "Content-type": "application/json",

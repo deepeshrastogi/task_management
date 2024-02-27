@@ -5,8 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title')</title>
-        {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-        {{-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" /> --}}
+        <link rel="icon" type="image/x-icon" href="{{ asset('task_management/assets/img/favicon.ico') }}">
         <link href="{{ asset('task_management/css/styles.css') }}" rel="stylesheet" />
         <link href="{{ asset('task_management/css/custom.css') }}" rel="stylesheet" />
     </head>
@@ -18,6 +17,18 @@
                     @include('inc.sidebar')
                     <div id="layoutSidenav_content">
                         <main>
+                            <div class="container loader_container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="loader">
+                                            <p>Loading...</p>
+                                            <div class="loader-inner"></div>
+                                            <div class="loader-inner"></div>
+                                            <div class="loader-inner"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             @yield('content')
                         </main>
                         @include('inc.footer')

@@ -156,7 +156,8 @@ Task | Lists
                 this.getTaskList();
             },
             methods: {
-                getTaskList(){
+                async getTaskList(){
+                    $(".loader_container").show();
                     let queryParams = {
                         'page': this.pagination.current_page,
                         'per_page': this.no_of_record,
@@ -165,7 +166,7 @@ Task | Lists
                     }
                     const queryString = new URLSearchParams(queryParams).toString();
                     const taskListApiUrlWithParam = `${taskListApiUrl}?${queryString}`;
-                    fetch(taskListApiUrlWithParam,{
+                    await fetch(taskListApiUrlWithParam,{
                         method:"GET",
                         headers: {
                             "Content-type": "application/json",
@@ -188,6 +189,7 @@ Task | Lists
                         this.pagination.from = tasks.from;
                         this.pagination.to = tasks.to;
                         this.pagination.current_page = tasks.current_page;
+                        $(".loader_container").hide();
                     });
                 },
                 changePage(page){
@@ -214,13 +216,13 @@ Task | Lists
                     this.search = '';
                     this.getTaskList();
                 },
-                updateTaskStatus(id,status){
+                async updateTaskStatus(id,status){
                     let updateTaskApiUrl = appUrl+`/api/task/`+id;
                     let bodyData = {
                         'id': id,
                         'status': status,
                     }
-                    fetch(updateTaskApiUrl,{
+                    await fetch(updateTaskApiUrl,{
                         method:"PATCH",
                         headers: {
                             "Content-type": "application/json",
@@ -237,9 +239,9 @@ Task | Lists
                 show(id){
                     window.location = appUrl+'/tasks/'+id; 
                 },
-                deleteTask(id){
+                async deleteTask(id){
                     let deleteApiUrl = appUrl+`/api/task/`+id;
-                    fetch(deleteApiUrl,{
+                    await fetch(deleteApiUrl,{
                         method:"DELETE",
                         headers: {
                             "Content-type": "application/json",
