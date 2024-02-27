@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/login', function () {
     return view('user/login');
@@ -23,7 +23,6 @@ Route::get('/signup', function () {
 Route::get('/', function () {
     return view('user/dashboard');
 })->name('user.dashboard');
-
 
 Route::get('/tasks', function () {
     return view('task/index');
@@ -44,4 +43,3 @@ Route::get('/tasks/trashed', function () {
 Route::get('/tasks/{id}', function () {
     return view('task/show');
 })->name('task.show');
-

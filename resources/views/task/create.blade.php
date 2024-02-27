@@ -45,7 +45,7 @@ Task | Create
 @section('scripts')
     <script>
         let token = localStorage.getItem("token");
-        let createTaskApiUrl = "{{ route('api.task.create') }}";
+        let createTaskApiUrl = "{{ route('api.task.store') }}";
         const { createApp} = Vue;
         let app = createApp({
             data() {

@@ -52,8 +52,8 @@ Sub-Task |Create
 @section('scripts')
     <script>
         let token = localStorage.getItem("token");
-        let createTaskApiUrl = "{{ route('api.task.create') }}";
-        let getTaskNameListApiUrl = "{{ route('api.task.getTaskNameList') }}";
+        let createTaskApiUrl = "{{ route('api.task.store') }}";
+        let getTaskNameListApiUrl = "{{ route('api.task.name.list') }}";
         const { createApp} = Vue;
         let app = createApp({
             data() {

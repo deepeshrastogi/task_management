@@ -8,4 +8,5 @@ namespace App\Repositories\Interfaces\Tasks;
 interface SubTaskRepositoryInterface
 {
     public function storeSubTask($taskData);
+    public function getSubTasks($taskId);
 }

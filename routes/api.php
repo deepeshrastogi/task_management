@@ -25,14 +25,11 @@ Route::group(['middleware' => 'api','as' => 'api.'], function () {
         });
     });
 
-    Route::group(['middleware' => 'auth:sanctum','prefix' => 'task','as' => 'task.'], function () {
-        Route::post('/', [TaskController::class, 'index'])->name('list');
-        Route::get('/{id}', [TaskController::class, 'show'])->name('show');
-        Route::delete('/{id}', [TaskController::class, 'destroy'])->name('delete');
-        Route::post('create', [TaskController::class, 'store'])->name('create');
-        Route::patch('update-status', [TaskController::class, 'updateTaskStatus'])->name('updateTaskStatus');
-        Route::get('list/name', [TaskController::class, 'getTaskNameList'])->name('getTaskNameList');
-        Route::post('/trashed', [TaskController::class, 'trashedTasks'])->name('trashed.list');
-        Route::post('sub-task/create', [SubTaskController::class, 'store'])->name('subtask.create');
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('task/list-name', [TaskController::class, 'getTaskNameList'])->name('task.name.list');
+        Route::get('task/trashed', [TaskController::class, 'trashedTasks'])->name('task.trashed.list');
+        Route::resource('task', TaskController::class)->except(['create','edit']);
+        Route::resource('sub-task', SubTaskController::class)->only(['store']);
     });
+    
 });

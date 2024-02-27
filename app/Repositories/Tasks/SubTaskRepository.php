@@ -17,4 +17,10 @@ class SubTaskRepository implements SubTaskRepositoryInterface
         $subTask = SubTask::create($taskData);
         return $subTask;
     }
+
+    public function getSubTasks($taskId)
+    {
+        $subTasks = SubTask::where(['task_id' => $taskId])->get();
+        return $subTasks;
+    }
 }

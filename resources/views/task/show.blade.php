@@ -88,7 +88,6 @@ Task | Details
     <script>
         let token = localStorage.getItem("token");
         let taskApiUrl = "{{ $taskApiURL }}";
-        let updateTaskApiUrl = "{{ route('api.task.updateTaskStatus') }}";
         let appUrl = "{{ url('/') }}";
 
         $(document).on("change", "#updateStatus", function(e) {
@@ -170,6 +169,7 @@ Task | Details
                     })
                 },
                 updateTaskStatus(id,status){
+                    let updateTaskApiUrl = appUrl+`/api/task/`+id;
                     let bodyData = {
                         'id': id,
                         'status': status,

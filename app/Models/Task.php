@@ -45,7 +45,6 @@ class Task extends Model
 
     protected function getStatusAttribute($value){
         $statusArr = Config::get('constant.STATUS');
-        // return ucfirst($statusArr[$value]);
         return $statusArr[$value];
     }
 

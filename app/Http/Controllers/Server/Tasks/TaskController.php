@@ -52,9 +52,9 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request
      * @return [json] token object, through an error if user credentials are not valid
      */
-    public function show(Request $request)
+    public function show(Request $request, string $id)
     {
-        return $this->taskService->show($request);
+        return $this->taskService->show($request,$id);
     }
 
 
@@ -62,7 +62,7 @@ class TaskController extends Controller
      * destroy through get
      * @return [json] \Illuminate\Http\Response
      */
-    public function destroy(Request $request,$id)
+    public function destroy(Request $request, string $id)
     {
         return $this->taskService->destroy($request,$id);
     }
@@ -71,9 +71,9 @@ class TaskController extends Controller
      * update task status through patch
      * @return [json] \Illuminate\Http\Response
      */
-    public function updateTaskStatus(Request $request)
+    public function update(Request $request, string $id)
     {
-        return $this->taskService->updateTaskStatus($request);
+        return $this->taskService->updateTaskStatus($request,$id);
     }
 
     /**

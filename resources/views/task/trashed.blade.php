@@ -138,20 +138,21 @@ Task | Lists
             },
             methods: {
                 getTaskList(){
-                    let bodyData = {
+                    let queryParams = {
                         'page': this.pagination.current_page,
                         'per_page': this.no_of_record,
                         'status': this.status,
                         'search': this.search,
                     }
-                    fetch(taskListApiUrl,{
-                        method:"POST",
+                    const queryString = new URLSearchParams(queryParams).toString();
+                    const taskListApiUrlWithParam = `${taskListApiUrl}?${queryString}`;
+                    fetch(taskListApiUrlWithParam,{
+                        method:"GET",
                         headers: {
                             "Content-type": "application/json",
                             "accept": "application/json",
                             "Authorization":"Bearer "+token
-                        },
-                        body:JSON.stringify(bodyData)
+                        }
                     })
                     .then(res => res.json())
                     .then(result => {

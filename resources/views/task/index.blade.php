@@ -94,8 +94,7 @@ Task | Lists
 @section('scripts')
     <script>
         let token = localStorage.getItem("token");
-        let taskListApiUrl = "{{ route('api.task.list') }}";
-        let updateTaskApiUrl = "{{ route('api.task.updateTaskStatus') }}";
+        let taskListApiUrl = "{{route('api.task.index')}}";
         let appUrl = "{{ url('/') }}";
 
         $(document).on("change", "#updateStatus", function(e) {
@@ -158,20 +157,21 @@ Task | Lists
             },
             methods: {
                 getTaskList(){
-                    let bodyData = {
+                    let queryParams = {
                         'page': this.pagination.current_page,
                         'per_page': this.no_of_record,
                         'status': this.status,
                         'search': this.search,
                     }
-                    fetch(taskListApiUrl,{
-                        method:"POST",
+                    const queryString = new URLSearchParams(queryParams).toString();
+                    const taskListApiUrlWithParam = `${taskListApiUrl}?${queryString}`;
+                    fetch(taskListApiUrlWithParam,{
+                        method:"GET",
                         headers: {
                             "Content-type": "application/json",
                             "accept": "application/json",
                             "Authorization":"Bearer "+token
-                        },
-                        body:JSON.stringify(bodyData)
+                        }
                     })
                     .then(res => res.json())
                     .then(result => {
@@ -215,6 +215,7 @@ Task | Lists
                     this.getTaskList();
                 },
                 updateTaskStatus(id,status){
+                    let updateTaskApiUrl = appUrl+`/api/task/`+id;
                     let bodyData = {
                         'id': id,
                         'status': status,
