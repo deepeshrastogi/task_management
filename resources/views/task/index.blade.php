@@ -3,6 +3,7 @@
 Task | Lists
 @endsection
 @section('content')
+@php $createTaskUrl = route('task.create'); @endphp
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
             <div class="alert alert-success alert-dismissible fade show alertMessage" role="alert" v-show="message">
@@ -29,9 +30,11 @@ Task | Lists
                         <span>
                             <input type="text" v-model="search"/>
                         </span>
-                        &nbsp;<button class="btn btn-sm btn-primary" @click="searchByTitle"><span class="fa fa-search"></span></button>
+                        &nbsp;<button class="btn btn-sm btn-primary" @click="searchByTitle" title="Search"><span class="fa fa-search"></span></button>
                         &nbsp;
                         <button type="button" class="btn btn-info btn-sm" title="Reset filter" @click="resetFilter"><span class="fas fa-eraser"></span></button>
+                         &nbsp;
+                        <a href="{{ $createTaskUrl }}" class="btn btn-success btn-sm" title="Create new task"><span class="fas fa-plus"></span></a>
                     </div>
                 </div>
             </div>
