@@ -15,15 +15,15 @@
 
 5 - Run the command "php artisan migrate"
 
-6 - Run command "php artisan serve --port=8000"
+6 - Run the command "php artisan serve --port=8000"
 
-7 - Added API Collection in Root folder "API Collection", we can import this collection to postman software
+7 - Added API Collection in Root folder "API Collection", we can import this collection to Postman software
 
 8 - Create a new account/Login
 
-9 - Run command "php artisan queue:work" OR "php artisan queue:listen" - If there are media attachments in tasks the queue will execute the task script with image uploading option.
+9 - Run the command "php artisan queue:work" OR "php artisan queue:listen" - If there are media attachments in tasks the queue will execute the task script with the image uploading option.
 
-10 - Now tasks list is displayed on the Dashboard page, Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
+10 - Now that the tasks list is displayed on the Dashboard page, the Admin will take actions like create Task and Sub Task, Delete Task and Sub Task.
 
 ## Screenshot of Task Management for related Task management systems like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
 
