@@ -52,8 +52,7 @@ class TaskService
     public function store($requestData)
     {
         $validateArr = [
-            // 'title' => 'required|max:100|unique:task',
-            'title' => 'required|max:100',
+            'title' => 'required|max:100|unique:task',
             'content' => 'required',
             'status' => 'required',
             'attachment' => 'image|mimes:jpeg,jpg,png,bmp,gif,svg|max:4096',

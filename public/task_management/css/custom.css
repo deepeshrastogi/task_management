@@ -89,10 +89,10 @@ body,select{
     background: #fff;
     height: 90%;
     position: absolute;
+    z-index: 1;
 }
 
 #layoutAuthentication_content > main > .loader_container{
     background: unset;
-    z-index: 1;
     left: 20%;
 }

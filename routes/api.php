@@ -22,6 +22,7 @@ Route::group(['middleware' => 'api','as' => 'api.'], function () {
         Route::post('/signup', [UserAuthController::class, 'signup'])->name('signup');
         Route::group(['middleware' => 'auth:sanctum'], function() {
             Route::get('logout', [UserAuthController::class, 'logout'])->name('logout');
+            Route::get('dashboard', [UserAuthController::class, 'dashboard'])->name('dashboard');
         });
     });
 

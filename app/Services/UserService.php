@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\Interfaces\Users\UserRepositoryInterface;
+use App\Repositories\Interfaces\Tasks\TaskRepositoryInterface;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,7 @@ class UserService
      * @var $userRepository
      */
     protected $userRepository;
+    protected $taskRepository;
 
     /**
      * order constructor.
@@ -23,9 +25,10 @@ class UserService
      * @param Repository $userRepository
      */
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository,TaskRepositoryInterface $taskRepository)
     {
         $this->userRepository = $userRepository;
+        $this->taskRepository = $taskRepository;
     }
 
     /**
@@ -89,5 +92,18 @@ class UserService
     {
         $requestData->user()->tokens()->delete();
         return $this->success(message: 'You are successfully logged out', content: []);
+    }
+
+    /**
+     * dashboard through get
+     * @return [json] \Illuminate\Http\Response
+     */
+    public function dashboard($requestData)
+    {
+        $user = $requestData->user();
+        $taskCount = $this->taskRepository->getUserTasksCount($user->id);
+        $trashedTaskCount = $this->taskRepository->getUserTrashedTasksCount($user->id);
+        $data = ['task_count' => $taskCount,'trashed_task_count' => $trashedTaskCount];
+        return $this->success(message: 'Dashboard details have been fetched successfully', content: $data);
     }
 }

@@ -50,4 +50,13 @@ class UserAuthController extends Controller
     {
         return $this->userService->logout($request);
     }
+
+    /**
+     * dashboard through get
+     * @return [json] \Illuminate\Http\Response
+     */
+    public function dashboard(Request $request)
+    {
+        return $this->userService->dashboard($request);
+    }
 }

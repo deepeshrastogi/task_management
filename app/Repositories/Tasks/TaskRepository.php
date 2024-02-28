@@ -83,5 +83,13 @@ class TaskRepository implements TaskRepositoryInterface
         return $tasks;
     }
 
-    
+    public function getUserTasksCount($userId){
+        $taskCount = Task::where('user_id',$userId)->count();
+        return $taskCount;
+    }
+
+    public function getUserTrashedTasksCount($userId){
+        $taskCount = Task::where('user_id',$userId)->onlyTrashed()->count();
+        return $taskCount;
+    }
 }

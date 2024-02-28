@@ -72,6 +72,11 @@
 								"key": "Accept",
 								"value": "application/json",
 								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 28|0eAZZujPJMZnO7N8JvcmwtavAQBUNnWOj7TA85n27bb0b224",
+								"type": "text"
 							}
 						],
 						"body": {
@@ -79,6 +84,41 @@
 							"raw": ""
 						},
 						"url": "{{local}}user/logout"
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 29|vkStq6XdxjTCjFZmRHcjcUiXnNwnwnEt0cGxzv7a9a9a2cba1",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{local}}user/dashboard"
 					},
 					"response": []
 				}
@@ -186,7 +226,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
+								"value": "Bearer 13|FVQ2aUejp4x3Em9jYHXzcoMTg86oUVneJdnUrDS1bdc00eea",
 								"type": "text"
 							},
 							{
@@ -200,7 +240,7 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "deepesh rastogi12_child1",
+									"value": "deepesh rastogi12_child12",
 									"type": "text"
 								},
 								{
@@ -221,11 +261,11 @@
 								{
 									"key": "attachment",
 									"type": "file",
-									"src": "/C:/Users/dell/Desktop/images/pexels-karsten-madsen-18105.jpg"
+									"src": "/C:/Users/dell/Downloads/task_details_with_sub_tasks.png"
 								},
 								{
 									"key": "task_id",
-									"value": "1",
+									"value": "82",
 									"type": "text"
 								}
 							]
