@@ -17,18 +17,7 @@
                     @include('inc.sidebar')
                     <div id="layoutSidenav_content">
                         <main>
-                            <div class="container loader_container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="loader">
-                                            <p>Loading...</p>
-                                            <div class="loader-inner"></div>
-                                            <div class="loader-inner"></div>
-                                            <div class="loader-inner"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @include('inc.loader')
                             @yield('content')
                         </main>
                         @include('inc.footer')

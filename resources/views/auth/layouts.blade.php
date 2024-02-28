@@ -15,6 +15,7 @@
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
+                    @include('inc.loader')
                     <div class="container">
                         @yield('content')
                     </div>

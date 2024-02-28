@@ -90,3 +90,9 @@ body,select{
     height: 90%;
     position: absolute;
 }
+
+#layoutAuthentication_content > main > .loader_container{
+    background: unset;
+    z-index: 1;
+    left: 20%;
+}

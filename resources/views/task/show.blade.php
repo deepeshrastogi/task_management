@@ -9,7 +9,10 @@ Task | Details
     @endphp
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
-
+            <div class="alert alert-success alert-dismissible fade show alertMessage" role="alert" v-show="message">
+                @{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="row">
                 <div class="col-4">
                     <form>
@@ -119,7 +122,8 @@ Task | Details
                         'in-progress':50,
                         'done':100,
                     },
-                    task_id:0
+                    task_id:0,
+                    message:''
                 }
             },
             computed: {
@@ -188,10 +192,14 @@ Task | Details
                     })
                     .then(res => res.json())
                     .then(result => {
-                        console.log("test",result.content.task_status);
                         if(result.content.task_status == "1"){
                             this.task.status = 'done';
                         }
+                        this.message = 'Status updated successfully';
+                        setTimeout(() => {
+                            this.message = '';
+                            $('.alertMessage').fadeOut('slow');
+                        }, 2000);
                     });
                 },
                 async deleteTask(id){
@@ -206,7 +214,11 @@ Task | Details
                     })
                     .then(res => res.json())
                     .then(result => {
-                        alert("Record delete successfully");
+                        this.message = 'Task deleted successfully';
+                        setTimeout(() => {
+                            this.message = '';
+                            $('.alertMessage').fadeOut('slow');
+                        }, 2000);
                         this.getTask();
                     });
                 },                

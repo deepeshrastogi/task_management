@@ -43,6 +43,7 @@ User | Login
             if (token) {
                 window.location = "{{ route('user.dashboard') }}";
             }
+            $(".loader_container").hide();
         });
         $(document).on("click", ".login", function(e) {
             e.preventDefault();
@@ -50,6 +51,7 @@ User | Login
         });
 
         function login() {
+            // $(".loader_container").show();
             apiUrl = "{{ route('api.user.login') }}";
             var formData = new FormData();
             let email = $("#loginForm").find("#email").val();
@@ -70,25 +72,33 @@ User | Login
                 }
                 return false;
             }
+            $(".loader_container").show();
             formData.append('email', email);
             formData.append('password', password);
             let response = ajaxCall(apiUrl, formData);
             response.done(function(data) {
                 localStorage.setItem('token', data.content.token);
                 localStorage.setItem('user', JSON.stringify(data.content.user));
-                window.location = "{{ route('user.dashboard') }}";
+                window.location.href = "{{ route('user.dashboard') }}?title=You are welcome to task management system";
+                $(".loader_container").hide();
             }).fail(function(data) {
                 $("#loginForm").find(".text-danger").remove();
                 $.each(data.responseJSON.error, function(key, value) {
                     if(value == "Unauthorized"){
-                        let error = `<div class="alert alert-danger" role="alert">`+value+`</div>`;
+                        let error = ` <div class="alert alert-danger alert-dismissible fade show alertMessage" role="alert">These credentials do not match our records.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>`
                         $("#loginForm").find(".auth_error").html(error);
+                        setTimeout(() => {
+                            error = '';
+                            $('.alertMessage').fadeOut('slow');
+                        }, 2000);
                     }else{
                         let error = `<span class="text-danger">` + value[0] + `</span>`;
                         $("#loginForm").find("." + key).addClass("is-invalid");
                         $("#loginForm").find("." + key).after(error);
                     }
                 });
+                $(".loader_container").hide();
             });
         }
 

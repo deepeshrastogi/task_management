@@ -1,11 +1,10 @@
 @extends('app')
 @section('title')
-Task | Lists
+Task | Trashed
 @endsection
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
-           {{-- @{{ tasks }} --}}
            <div class="no_of_record">
                 <div class="row mb-3">
                     <div class="col-md-2">
@@ -22,11 +21,12 @@ Task | Lists
                         </select>
                     </div>
 
-                    <div class="col-md-4">
-                        Search
-                        <input type="text" v-model="search" @keyup="searchByTitle" />
-                    </div>
-                    <div class="col-md-2">
+                    <div class="offset-md-2 col-md-4">
+                        <span>
+                            <input type="text" v-model="search"/>
+                        </span>
+                        &nbsp;<button class="btn btn-sm btn-primary" @click="searchByTitle"><span class="fa fa-search"></span></button>
+                        &nbsp;
                         <button type="button" class="btn btn-info btn-sm" title="Reset filter" @click="resetFilter"><span class="fas fa-eraser"></span></button>
                     </div>
                 </div>

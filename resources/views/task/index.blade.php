@@ -5,7 +5,10 @@ Task | Lists
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
-           {{-- @{{ tasks }} --}}
+            <div class="alert alert-success alert-dismissible fade show alertMessage" role="alert" v-show="message">
+                @{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
            <div class="no_of_record">
                 <div class="row mb-3">
                     <div class="col-md-2">
@@ -22,11 +25,12 @@ Task | Lists
                         </select>
                     </div>
 
-                    <div class="col-md-4">
-                        Search
-                        <input type="text" v-model="search" @keyup="searchByTitle" />
-                    </div>
-                    <div class="col-md-2">
+                    <div class="offset-md-2 col-md-4">
+                        <span>
+                            <input type="text" v-model="search"/>
+                        </span>
+                        &nbsp;<button class="btn btn-sm btn-primary" @click="searchByTitle"><span class="fa fa-search"></span></button>
+                        &nbsp;
                         <button type="button" class="btn btn-info btn-sm" title="Reset filter" @click="resetFilter"><span class="fas fa-eraser"></span></button>
                     </div>
                 </div>
@@ -133,6 +137,7 @@ Task | Lists
                         'in-progress':50,
                         'done':100,
                     },
+                    message:''
                 }
             },
             watch:{
@@ -233,6 +238,11 @@ Task | Lists
                     })
                     .then(res => res.json())
                     .then(result => {
+                        this.message = 'Status updated successfully';
+                        setTimeout(() => {
+                            this.message = '';
+                            $('.alertMessage').fadeOut('slow');
+                        }, 2000);
                         // console.log(result);
                     });
                 },
@@ -251,7 +261,11 @@ Task | Lists
                     })
                     .then(res => res.json())
                     .then(result => {
-                        alert("Record delete successfully");
+                        this.message = 'Task deleted successfully';
+                        setTimeout(() => {
+                            this.message = '';
+                            $('.alertMessage').fadeOut('slow');
+                        }, 2000);
                         this.getTaskList();
                     });
                 },

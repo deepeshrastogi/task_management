@@ -3,8 +3,13 @@
 Task | Create
 @endsection
 @section('content')
+
     <div class="row justify-content-center mt-5">
         <div class="col-md-11" id="app">
+            <div class="alert alert-success alert-dismissible fade show alertMessage" role="alert" v-show="message">
+                @{{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <h4 class="mb-3"><u>Create Task</u></h4>
             <form method="POST" @submit.prevent="createTask" enctype="multipart/form-data">
                 <div class="row">
@@ -34,7 +39,7 @@ Task | Create
                     </div>
                     <div class="mb-3">
                         <label for="attachment" class="form-label">Attachement</label>
-                        <input type="file" class="form-control" @change="onFileChange" id="attachment" >
+                        <input type="file" class="form-control" @change="onFileChange" id="attachment" ref="fileInput">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
@@ -89,6 +94,7 @@ Task | Create
                     if('title' in this.formErrors || 'status' in this.formErrors || 'content' in this.formErrors){
                         return false;
                     }
+                    $(".loader_container").show();
                     var formData = new FormData();
                     for ( var key in this.task ) {
                         formData.append(key, this.task[key]);
@@ -106,11 +112,19 @@ Task | Create
                     }
                     await axios.post(createTaskApiUrl, formData, config).then(response => {
                        if(response.status){
-                            alert(response.data.message);
+                            this.message = response.data.message;
+                            this.$refs.fileInput.value = null;
+                            this.attachment = '';
                             this.task = {};
+                            setTimeout(() => {
+                                this.message = '';
+                                $('.alertMessage').fadeOut('slow');
+                            }, 2000);
                        }
+                       $(".loader_container").hide();
                     }).catch(error => {
                         this.formErrors = error.response.data.error;
+                        $(".loader_container").hide();
                         // console.log(error);
                     })
                 },

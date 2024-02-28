@@ -5,7 +5,6 @@ User | Signup
 @section('content')
     <div class="row justify-content-center mt-5">
         <div class="col-md-8">
-
             <div class="card">
                 <div class="card-header">Sign up</div>
                 <div class="card-body">
@@ -56,6 +55,7 @@ User | Signup
             if (token) {
                 window.location = "{{ route('user.dashboard') }}";
             }
+            $(".loader_container").hide();
         });
         $(document).on("click", ".singUp", function(e) {
             e.preventDefault();
@@ -97,6 +97,7 @@ User | Signup
                 }
                 return false;
             }
+            $(".loader_container").show();
             formData.append('name', name);
             formData.append('email', email);
             formData.append('password', password);
@@ -105,7 +106,8 @@ User | Signup
             response.done(function(data) {
                 localStorage.setItem('token', data.content.token);
                 localStorage.setItem('user', JSON.stringify(data.content.user));
-                window.location = "{{ route('user.dashboard') }}";
+                window.location.href = "{{ route('user.dashboard') }}?title=You are welcome to task management system";
+                $(".loader_container").hide();
             }).fail(function(data) {
                 $("#signupForm").find(".text-danger").remove();
                 $.each(data.responseJSON.error, function(key, value) {
@@ -113,6 +115,7 @@ User | Signup
                     $("#signupForm").find("." + key).addClass("is-invalid");
                     $("#signupForm").find("." + key).after(error);
                 });
+                $(".loader_container").hide();
             });
         }
 
