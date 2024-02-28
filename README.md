@@ -27,11 +27,12 @@
 
 ## Screenshot of Task Management for related Task management systems like Sign up, Login, Tasks list, Task creation/ Sub Task Creation, Update Status, and details
 
-![signup](https://github.com/deepeshrastogi/task_management/assets/38438355/1fc06b16-4aa5-4447-a9e8-36d54637162b)
+![signup](https://github.com/deepeshrastogi/task_management/assets/38438355/4fb35b75-d6a7-4104-a265-6a18ffbbe506)
 ![login](https://github.com/deepeshrastogi/task_management/assets/38438355/8d58b530-d1a2-48fb-92fa-adc79f5adc9e)
 ![dashboard](https://github.com/deepeshrastogi/task_management/assets/38438355/3fdecdd6-2b05-49dc-b2a2-2676a8712d76)
 ![task_list](https://github.com/deepeshrastogi/task_management/assets/38438355/d0040f26-c67d-4f9c-a48f-b02e6164b071)
 ![task_details](https://github.com/deepeshrastogi/task_management/assets/38438355/bf40ce66-0bbc-48c2-94a8-5fb59e37b2b8)
+![task_details_with_sub_tasks](https://github.com/deepeshrastogi/task_management/assets/38438355/ed18e2ae-c78d-401e-9ccb-cfa7a9aae87d)
 ![sub_task_creation](https://github.com/deepeshrastogi/task_management/assets/38438355/543f5b6f-bb37-488f-80a7-0abc347637d9)
 ![trashed_tasks_list](https://github.com/deepeshrastogi/task_management/assets/38438355/a3b2b225-886f-40e3-a0ab-d1992d63940e)
 
