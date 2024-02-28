@@ -134,10 +134,10 @@ Task | Details
                 }
             },
             mounted() {
-                this.createTask();
+                this.getTask();
             },
             methods: {
-                createTask() {
+                async getTask() {
                     const config = {
                         headers: {
                             "Content-type": "application/json",
@@ -145,12 +145,14 @@ Task | Details
                             'Authorization': 'Bearer ' + token
                         }
                     }
-                    axios.get(taskApiUrl, config).then(response => {
+                    await axios.get(taskApiUrl, config).then(response => {
                         if (response.status) {
                             let taskData = response.data.content;
                             this.task_id = taskData.task.id;
                             if(taskData.task.sub_tasks.length > 0){
                                 this.subTasks = taskData.task.sub_tasks;
+                            }else{
+                                this.subTasks =[];
                             }
                             let isPublished = (taskData.task.is_published == "1") ? true : false;
                             let attachment = (taskData.task.attachment !== null) ? taskData.task.attachment  : '';
@@ -161,20 +163,21 @@ Task | Details
                                 is_published: isPublished,
                                 attachment:attachment
                             }
+                            $(".loader_container").hide();
                         }
                     }).catch(error => {
                         // this.formErrors = error.response.data.error;
                         // console.log(error);
                     })
                 },
-                updateTaskStatus(id,status){
+                async updateTaskStatus(id,status){
                     let updateTaskApiUrl = appUrl+`/api/task/`+id;
                     let bodyData = {
                         'id': id,
                         'status': status,
                         'task_id':this.task_id
                     }
-                    fetch(updateTaskApiUrl,{
+                    await fetch(updateTaskApiUrl,{
                         method:"PATCH",
                         headers: {
                             "Content-type": "application/json",
@@ -191,9 +194,9 @@ Task | Details
                         }
                     });
                 },
-                deleteTask(id){
+                async deleteTask(id){
                     let deleteApiUrl = appUrl+`/api/task/`+id;
-                    fetch(deleteApiUrl,{
+                    await fetch(deleteApiUrl,{
                         method:"DELETE",
                         headers: {
                             "Content-type": "application/json",
@@ -204,11 +207,9 @@ Task | Details
                     .then(res => res.json())
                     .then(result => {
                         alert("Record delete successfully");
-                        this.createTask();
+                        this.getTask();
                     });
-                },
-
-                
+                },                
             },
         }).mount('#app')
     </script>

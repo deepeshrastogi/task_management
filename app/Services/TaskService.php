@@ -2,10 +2,10 @@
 
 namespace App\Services;
 
+use App\Jobs\TaskAttachmentJob;
 use App\Repositories\Interfaces\Tasks\SubTaskRepositoryInterface;
 use App\Repositories\Interfaces\Tasks\TaskRepositoryInterface;
 use App\Traits\ApiResponse;
-use App\Jobs\TaskAttachmentJob;
 use Validator;
 
 class TaskService
@@ -78,8 +78,8 @@ class TaskService
         }
         if ($requestData->hasfile('attachment')) {
             TaskAttachmentJob::dispatch($requestData); //upload data through queue
-            $task = (object)[];
-        }else{
+            $task = $requestData->all();
+        } else {
             $task = $this->taskRepository->storeTask($taskData);
         }
         $response = ['user' => $task];
@@ -173,5 +173,37 @@ class TaskService
         $tasks = $this->taskRepository->getUserTrashedTaskList($loginUser->id, $filter);
         $response = ['tasks' => $tasks];
         return $this->success(message: 'Your trashed task has been fetched successfully', content: $response);
+    }
+
+    public function deleteTrashedTaskWithSubTaskList()
+    {
+        $tasks = $this->taskRepository->getTrashedTaskWithSubTaskList();
+        foreach ($tasks as $task) {
+            $ids[] = $task->id;
+            if (!empty($task->attachment)) {
+                $this->deleteImage($task->attachment);
+            }
+            if (!empty($task->subTasks[0])) {
+                foreach ($task->subTasks as $subTask) {
+                    $ids[] = $subTask->id;
+                    if (!empty($subTask->attachment)) {
+                        $this->deleteImage($subTask->attachment);
+                    }
+                    $subTask->forceDelete();
+                }
+            }
+            $task->forceDelete();
+        }
+        return $this->success(message: 'Your trashed task has been deleted successfully', content: []);
+    }
+
+    function deleteImage($imageUrl)
+    {
+        $attachArr = explode('/', $imageUrl);
+        $image = end($attachArr);
+        $filePath = public_path('uploads') . '/' . $image;
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
     }
 }

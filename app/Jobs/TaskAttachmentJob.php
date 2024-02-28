@@ -8,7 +8,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Task;
-use Illuminate\Http\UploadedFile;
 
 class TaskAttachmentJob implements ShouldQueue
 {
@@ -25,6 +24,9 @@ class TaskAttachmentJob implements ShouldQueue
         $taskData['status'] = $data->status;
         $taskData['is_published'] = !empty($data->is_published) ? $data->is_published : 1;
         $taskData['user_id'] = $userId;
+        if(!empty($data->task_id)){
+            $taskData['task_id'] = $data->task_id;
+        }
         $attachFile = $data->file('attachment');
         $destinationPath = public_path('uploads');
         if (!file_exists($destinationPath)) {

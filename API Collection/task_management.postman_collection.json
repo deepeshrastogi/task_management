@@ -48,7 +48,7 @@
 							"mode": "raw",
 							"raw": "{\r\n    \"email\":\"deepesh@yopmail.com\",\r\n    \"password\":\"deepesh@yopmail.com\"\r\n}"
 						},
-						"url": "http://localhost:8000/api/user/login"
+						"url": "{{local}}user/login"
 					},
 					"response": []
 				},
@@ -88,7 +88,7 @@
 			"name": "Task",
 			"item": [
 				{
-					"name": "create",
+					"name": "store",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -99,7 +99,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 18|CCULSewImFtA5zowdCMS86yoKv7mqRgyGeWK9Vk388113baa",
+								"value": "Bearer 12|fwseQteYjfrZx5aw4WwG0xW9Mg9hO4ghOLbTAAGr6fdc237d",
 								"type": "text"
 							},
 							{
@@ -113,12 +113,12 @@
 							"formdata": [
 								{
 									"key": "title",
-									"value": "deepesh rastogi813",
+									"value": "deepesh rastogi813211w",
 									"type": "text"
 								},
 								{
 									"key": "content",
-									"value": "sfsda fjsda dsafsd f as dsaf sda",
+									"value": "sfsda fjsda dsafsd f as dsaf sda1ww",
 									"type": "text"
 								},
 								{
@@ -134,18 +134,21 @@
 								{
 									"key": "attachment",
 									"type": "file",
-									"src": "/C:/Users/dell/Desktop/images/pexels-karsten-madsen-18105.jpg"
+									"src": "/C:/Users/dell/Downloads/march.PNG"
 								}
 							]
 						},
-						"url": "{{local}}task/create"
+						"url": "{{local}}task"
 					},
 					"response": []
 				},
 				{
 					"name": "tasks-list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [
 							{
 								"key": "Accept",
@@ -154,7 +157,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 26|a36w3DfyYc38N9Xfd2Qtw2y3Gl88Ox1nLAEZKAeg5915016f",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -165,9 +168,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"per_page\":10,\r\n    \"search\":\"rastogi\",\r\n    \"status\":\"3\"\r\n}"
+							"raw": "{\r\n    \"per_page\":10,\r\n    \"search\":\"\",\r\n    \"status\":\"\"\r\n}"
 						},
-						"url": "http://localhost:8000/api/task"
+						"url": "{{local}}task"
 					},
 					"response": []
 				},
@@ -183,7 +186,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 18|CCULSewImFtA5zowdCMS86yoKv7mqRgyGeWK9Vk388113baa",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -222,17 +225,17 @@
 								},
 								{
 									"key": "task_id",
-									"value": "18",
+									"value": "1",
 									"type": "text"
 								}
 							]
 						},
-						"url": "{{local}}task/sub-task/create"
+						"url": "{{local}}sub-task"
 					},
 					"response": []
 				},
 				{
-					"name": "update-task-status",
+					"name": "update-status",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -243,7 +246,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 18|CCULSewImFtA5zowdCMS86yoKv7mqRgyGeWK9Vk388113baa",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -254,9 +257,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\":30,\r\n    \"status\":\"in-progress\"\r\n}"
+							"raw": "{\r\n    \"status\":\"in-progress\"\r\n}"
 						},
-						"url": "{{local}}task/update-status"
+						"url": "{{local}}task/1"
 					},
 					"response": []
 				},
@@ -275,7 +278,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 18|CCULSewImFtA5zowdCMS86yoKv7mqRgyGeWK9Vk388113baa",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -288,7 +291,7 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{local}}task/18"
+						"url": "{{local}}task/1"
 					},
 					"response": []
 				},
@@ -304,7 +307,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 26|a36w3DfyYc38N9Xfd2Qtw2y3Gl88Ox1nLAEZKAeg5915016f",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -317,7 +320,7 @@
 							"mode": "raw",
 							"raw": ""
 						},
-						"url": "{{local}}task/47"
+						"url": "{{local}}task/7"
 					},
 					"response": []
 				},
@@ -336,7 +339,7 @@
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer 26|a36w3DfyYc38N9Xfd2Qtw2y3Gl88Ox1nLAEZKAeg5915016f",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
 								"type": "text"
 							},
 							{
@@ -349,7 +352,39 @@
 							"mode": "formdata",
 							"formdata": []
 						},
-						"url": "{{local}}task/list/name"
+						"url": "{{local}}task/list-name"
+					},
+					"response": []
+				},
+				{
+					"name": "trashed-tasks-list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 8|krknxjPIUSfPgxVgiCdO4vKpPQoEondUlx6QBfoE45263011",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"per_page\":10,\r\n    \"search\":\"\",\r\n    \"status\":\"\"\r\n}"
+						},
+						"url": "{{local}}task/trashed"
 					},
 					"response": []
 				}

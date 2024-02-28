@@ -61,5 +61,4 @@ class Task extends Model
     public static function getTaskCount(){
         return Task::whereNull('task_id')->count();
     }
-
 }

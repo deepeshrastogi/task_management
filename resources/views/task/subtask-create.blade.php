@@ -92,7 +92,7 @@ Sub-Task |Create
                 $(".loader_container").hide();
             },
             methods: {
-                getTask(){
+                async getTask(){
                     const config = {
                         headers: {
                             "Content-type": "application/json",
@@ -100,7 +100,7 @@ Sub-Task |Create
                             'Authorization': 'Bearer ' + token
                         }
                     }
-                    axios.get(getTaskNameListApiUrl, config).then(response => {
+                    await axios.get(getTaskNameListApiUrl, config).then(response => {
                         if (response.status) {
                             this.taskList = response.data.content.task;
                         }
@@ -109,7 +109,7 @@ Sub-Task |Create
                         // console.log(error);
                     })
                 },
-                createTask(event){
+                async createTask(event){
                     // check validation
                     this.checkValidations();
                     if('task_id' in this.formErrors || 'title' in this.formErrors || 'status' in this.formErrors || 'content' in this.formErrors){
@@ -131,7 +131,7 @@ Sub-Task |Create
                             'Authorization':'Bearer '+token
                         }
                     }
-                    axios.post(createTaskApiUrl, formData, config).then(response => {
+                    await axios.post(createTaskApiUrl, formData, config).then(response => {
                        if(response.status){
                             alert('Your Sub task created successfully');
                             this.task = {};

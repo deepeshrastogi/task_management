@@ -137,7 +137,7 @@ Task | Lists
                 this.getTaskList();
             },
             methods: {
-                getTaskList(){
+                async getTaskList(){
                     $(".loader_container").show();
                     let queryParams = {
                         'page': this.pagination.current_page,
@@ -147,7 +147,7 @@ Task | Lists
                     }
                     const queryString = new URLSearchParams(queryParams).toString();
                     const taskListApiUrlWithParam = `${taskListApiUrl}?${queryString}`;
-                    fetch(taskListApiUrlWithParam,{
+                    await fetch(taskListApiUrlWithParam,{
                         method:"GET",
                         headers: {
                             "Content-type": "application/json",

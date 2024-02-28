@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\Tasks\SubTaskRepositoryInterface;
 use App\Traits\ApiResponse;
 use Validator;
+use App\Jobs\TaskAttachmentJob;
 
 class SubTaskService
 {
@@ -53,23 +54,15 @@ class SubTaskService
         $taskData['title'] = $requestData->title;
         $taskData['content'] = $requestData->content;
         $taskData['status'] = $requestData->status;
+        $taskData['is_published'] = !empty($requestData->is_published) ? $requestData->is_published : 1;
         $taskData['user_id'] = $userId;
-
         if ($requestData->hasfile('attachment')) {
-            $destinationPath = public_path('uploads');
-            if (!file_exists($destinationPath)) {
-                mkdir($destinationPath, 0755, true); // Create the directory recursively
-            }
-            $attachFile = $requestData->file('attachment');
-            $fileExtension = time() . '.' . $attachFile->getClientOriginalExtension();
-            $uniqueFname = rand() . time() . "_" . $fileExtension;
-            $attachFile->move($destinationPath, $uniqueFname);
-            $pulicUrlPath = url('/') . '/uploads/' . $uniqueFname;
-            $taskData['attachment'] = $pulicUrlPath;
+            TaskAttachmentJob::dispatch($requestData); //upload data through queue
+            $subTask = $requestData->all();
+        }else{
+            $subTask = $this->subTaskRepository->storeSubTask($taskData);
         }
-
-        $subTask = $this->subTaskRepository->storeSubTask($taskData);
-        $response = ['subTask' => $subTask];
+        $response = ['task' => $subTask];
         return $this->success(message: 'Your sub task is created successfully', content: $response);
     }
 }

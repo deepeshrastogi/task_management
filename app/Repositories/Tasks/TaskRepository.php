@@ -56,7 +56,8 @@ class TaskRepository implements TaskRepositoryInterface
 
     public function getTaskNameList($userId)
     {
-        $tasks = Task::select('id', 'title')->where(["user_id" => $userId])->whereNull('task_id')->get();
+        $tasks = Task::select('id', 'title')->where(["user_id" => $userId])->whereNull('task_id')
+        ->orderBy('title','asc')->orderBy('created_at','asc')->get();
         return $tasks;
     }
 
@@ -75,4 +76,12 @@ class TaskRepository implements TaskRepositoryInterface
             ->paginate($per_page);
         return $tasks;
     }
+
+    public function getTrashedTaskWithSubTaskList()
+    {
+        $tasks = Task::with('subTasks')->onlyTrashed()->get();
+        return $tasks;
+    }
+
+    
 }

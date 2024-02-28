@@ -14,4 +14,5 @@ interface TaskRepositoryInterface
     public function updateTaskStatus($id, $taskData);
     public function getTaskNameList($userId);
     public function getUserTrashedTaskList($userId, $filter);
+    public function getTrashedTaskWithSubTaskList();
 }
